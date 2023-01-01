@@ -39,6 +39,13 @@ date_str = today.strftime('%Y%m%d')
 # %%
 #Path to service account
 credentials="./formalswap-570b555259ad.json"
+# Ensure all required environment variables are set
+try:  
+  os.path.isfile(credentials)
+except KeyError: 
+  print('[error]: service account credentials are missing.')
+
+  sys.exit(1)
 #Authorize service account to read GSheet
 gc = pygsheets.authorize(service_file=credentials)
 
