@@ -39,11 +39,11 @@ date_str = today.strftime('%Y%m%d')
 # %%
 #Path to service account
 credentials="./formalswap-570b555259ad.json"
-# Ensure all required environment variables are set
+# Check that service 
 try:  
   os.path.isfile(credentials)
 except KeyError: 
-  print('[error]: service account credentials are missing.')
+  print('[error]: service account (SA) credentials are missing. Email the app owner to obtain SA file.')
 
   sys.exit(1)
 #Authorize service account to read GSheet
@@ -110,7 +110,7 @@ while sum(available_df[group_str].isnull())>0:
         #get index from remaining unassigned guest    
         rest_idx=available_df[available_df[group_str].isnull()].index
         available_df.loc[rest_idx,group_str] = f'hosted by {host_name}'
-    #extract random number based on the number of guest that person can bring 
+    #extract number of remaining guests and assign them to the host
     else:
 
         #exclude host index from random number
@@ -121,11 +121,12 @@ while sum(available_df[group_str].isnull())>0:
 
 
 # %%
+#Assign guests to the original sheet
 formal_df.loc[available_df.index,group_str]=available_df[group_str]
 
 
 # %%
-#Identify starting cell 
+#Identify starting cell to append group column to 
 column_no=available_df.shape[1]-1
 start_cell=f'{chr(97 +column_no).upper()}1'
 print(start_cell)
